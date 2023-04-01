@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class SnakeHead : MonoBehaviour
 {
     public float MoveSpeed;
-    public float SnapDistance;
 
     Vector2Int latestInput = Vector2Int.right;
 
