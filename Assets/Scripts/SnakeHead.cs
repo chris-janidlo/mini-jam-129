@@ -32,6 +32,7 @@ public class SnakeHead : MonoBehaviour
     IEnumerator MovementRoutine()
     {
         Vector2Int destination = Vector2Int.RoundToInt(transform.position);
+        transform.position = (Vector2)destination; // ensure we start on the grid
 
         while (true)
         {
