@@ -13,9 +13,10 @@ public class QuestBox : MonoBehaviour
     private SpriteRenderer bgMiddleDown;
     private SpriteRenderer bgRightDown;
     private float timer;
-    private float ttlSeconds;
 
-    private TextMeshPro text;
+    private TextMeshPro description;
+
+    private Quest quest;
 
     public void Awake()
     {
@@ -26,72 +27,87 @@ public class QuestBox : MonoBehaviour
         bgMiddleDown = transform.Find("Background").transform.Find("BgMiddleDown").GetComponent<SpriteRenderer>();
         bgRightDown = transform.Find("Background").transform.Find("BgRightDown").GetComponent<SpriteRenderer>();
 
-        text = transform.Find("Questtext").GetComponent<TextMeshPro>();
+        description = transform.Find("Questtext").GetComponent<TextMeshPro>();
 
-        timer = 0;
-        ttlSeconds = 30;
+        quest = new Quest();
+
     }
 
 
     public void Start()
     {
-        setText("this is a sample text but it will grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow and grow");
+        initDescription(quest.getText());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timer < ttlSeconds)
+        if (timer < quest.getTtlSeconds())
         {
             timer = timer + Time.deltaTime;
+            setText(quest.getText());
         }
         else
         {
             Destroy(gameObject);
+            Debug.Log("destroy");
         }
 
     }
 
+
     private void setText(string questtext)
     {
-        text.SetText(questtext);
-        text.ForceMeshUpdate();
-        Vector2 textSize = text.GetRenderedValues(false);
+        float timeLeft = quest.getTtlSeconds() - timer;
+
+        questtext += "<br><br><align=\"center\">Time remaining: ";
+
+        if (timeLeft < 10)
+        {
+            questtext += "<color=\"red\">{0:0}</color> seconds";
+        }
+        else
+        {
+            questtext += "{0:0} seconds";
+        }
+
+        description.SetText(questtext, timeLeft);
+    }
+
+
+
+
+    private void initDescription(string questtext)
+    {
+
+        setText(questtext);
+        description.ForceMeshUpdate();
+
+        Vector2 descriptionSize = description.GetRenderedValues(false);
         Vector2 padding = new Vector2(0f, 0.25f);
-        textSize.x = 1;
-        textSize.y = textSize.y / 2;
+        descriptionSize.x = 1;
+        descriptionSize.y = descriptionSize.y / 2;
 
         float bgSize = bgLeftUp.size.y;
 
-        bgLeftUp.size = textSize + padding;
-        bgMiddleUp.size = textSize + padding;
-        bgRightUp.size = textSize + padding;
-        bgLeftDown.size = textSize + padding;
-        bgMiddleDown.size = textSize + padding;
-        bgRightDown.size = textSize + padding;
+        bgLeftUp.size = descriptionSize + padding;
+        bgMiddleUp.size = descriptionSize + padding;
+        bgRightUp.size = descriptionSize + padding;
+        bgLeftDown.size = descriptionSize + padding;
+        bgMiddleDown.size = descriptionSize + padding;
+        bgRightDown.size = descriptionSize + padding;
 
         float top = bgLeftUp.transform.position.y;
         
-
-        bgLeftDown.transform.position = new Vector2(bgLeftDown.transform.position.x, top - textSize.y - padding.y);
-        bgMiddleDown.transform.position = new Vector2(bgMiddleDown.transform.position.x, top - textSize.y - padding.y);
-        bgRightDown.transform.position = new Vector2(bgRightDown.transform.position.x, top - textSize.y - padding.y);
+        bgLeftDown.transform.position = new Vector2(bgLeftDown.transform.position.x, top - descriptionSize.y - padding.y);
+        bgMiddleDown.transform.position = new Vector2(bgMiddleDown.transform.position.x, top - descriptionSize.y - padding.y);
+        bgRightDown.transform.position = new Vector2(bgRightDown.transform.position.x, top - descriptionSize.y - padding.y);
 
         float bottom = bgLeftDown.transform.position.y;
 
-        //Debug.Log(top);
-        //Debug.Log(bottom);
-        //Debug.Log(textSize.y);
-
-        //Debug.Log(top - (top - bottom) / 2);
-
-        //Debug.Log(bgLeftUp.size.y / bgSize);
-
         float scale = Mathf.Max(1, bgLeftUp.size.y / bgSize);
 
-        //Debug.Log(scale);
-
-        text.transform.position = new Vector2(text.transform.position.x, top - (top - bottom)/2 + textSize.y - padding.y * scale);
+        description.transform.position = new Vector2(description.transform.position.x, top - (top - bottom)/2 + descriptionSize.y - padding.y * scale);
 
     }
 
