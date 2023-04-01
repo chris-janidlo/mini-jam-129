@@ -7,13 +7,30 @@ using UnityEngine.InputSystem;
 public class SnakeHead : MonoBehaviour
 {
     public float MoveSpeed;
+    public Vector2Int InitialMoveDirection;
 
-    Vector2Int latestInput = Vector2Int.right;
-    Vector2Int lockedInput = Vector2Int.right;
+    public new Rigidbody2D rigidbody;
+
+    Vector2Int latestInput, lockedInput, destination;
 
     void Start()
     {
-        StartCoroutine(MovementRoutine());
+        latestInput = lockedInput = InitialMoveDirection;
+
+        destination = Vector2Int.RoundToInt(rigidbody.position);
+        rigidbody.MovePosition(destination); // ensure we start on the grid
+    }
+
+    void FixedUpdate()
+    {
+        if (rigidbody.position == destination)
+        {
+            lockedInput = latestInput;
+            destination += lockedInput;
+        }
+
+        var newPos = Vector2.MoveTowards(rigidbody.position, destination, MoveSpeed * Time.deltaTime);
+        rigidbody.MovePosition(newPos);
     }
 
     void OnMove(InputValue value)
@@ -27,23 +44,5 @@ public class SnakeHead : MonoBehaviour
 
         // can't turn 180 degrees
         if (candidateInput != -lockedInput) latestInput = candidateInput;
-    }
-
-    IEnumerator MovementRoutine()
-    {
-        Vector2Int destination = Vector2Int.RoundToInt(transform.position);
-        transform.position = (Vector2)destination; // ensure we start on the grid
-
-        while (true)
-        {
-            lockedInput = latestInput;
-            destination += lockedInput;
-
-            while ((Vector2)transform.position != destination)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, destination, MoveSpeed * Time.deltaTime);
-                yield return null;
-            }
-        }
     }
 }
