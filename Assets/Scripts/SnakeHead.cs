@@ -9,6 +9,7 @@ public class SnakeHead : MonoBehaviour
     public float MoveSpeed;
 
     Vector2Int latestInput = Vector2Int.right;
+    Vector2Int lockedInput = Vector2Int.right;
 
     void Start()
     {
@@ -25,7 +26,7 @@ public class SnakeHead : MonoBehaviour
             : new Vector2Int(0, Math.Sign(input.y));
 
         // can't turn 180 degrees
-        if (candidateInput != -latestInput) latestInput = candidateInput;
+        if (candidateInput != -lockedInput) latestInput = candidateInput;
     }
 
     IEnumerator MovementRoutine()
@@ -34,7 +35,7 @@ public class SnakeHead : MonoBehaviour
 
         while (true)
         {
-            var lockedInput = latestInput;
+            lockedInput = latestInput;
             destination += lockedInput;
 
             while ((Vector2)transform.position != destination)
