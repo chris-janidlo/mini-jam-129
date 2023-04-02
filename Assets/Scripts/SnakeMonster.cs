@@ -15,6 +15,8 @@ public class SnakeMonster : MonoBehaviour
 
     public float SpawnAnimTime;
     public Ease SpawnAnimEase;
+    public float DespawnAnimTime;
+    public Ease DespawnAnimEase;
 
     public string IdleLayerName, FollowLayerName;
     public float IdleColliderSize, FollowColliderSize;
@@ -60,8 +62,11 @@ public class SnakeMonster : MonoBehaviour
 
     public void TurnInForQuest()
     {
-        Destroy(gameObject);
-        // TODO: animate
+        transform.DOScale(0, DespawnAnimTime)
+            .SetEase(DespawnAnimEase)
+            .OnComplete(() => Destroy(gameObject));
+        
+        this.enabled = false;
     }
 
     IEnumerator disperseRoutine()
