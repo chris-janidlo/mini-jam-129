@@ -170,6 +170,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 768
   rigidbody: {fileID: 3526664365904289701}
+  PlayerPosition: {fileID: 11400000, guid: 597d9d2e5354f454c83b95e1d81cf2f8, type: 2}
 --- !u!50 &3526664365904289701
 Rigidbody2D:
   serializedVersion: 4
@@ -262,8 +263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abce698e0bf872e44afda6584f65142d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 150
-  Amplitude: 10
-  StartRandomness: {x: 0, y: 10}
+  SpeedRange: {x: 140, y: 160}
+  AmplitudeRange: {x: 7, y: 13}
+  StartTimeRange: {x: 0, y: 10}
   Rigidbody: {fileID: 3526664365904289701}
   SpritePivot: {fileID: 1599323624935200693}

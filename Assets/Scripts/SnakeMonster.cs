@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class SnakeMonster : MonoBehaviour
 {
+    public static int NumSpawned { get; private set; }
+
     public Vector2 DispersalDistanceRange;
     public Color DispersalColor;
     public float DisperseTime;
@@ -22,14 +24,18 @@ public class SnakeMonster : MonoBehaviour
     public new BoxCollider2D collider;
 
     public IconMap IconMap;
-    public Monsters Monster;
 
     public bool Following { get; private set; }
 
-
-    void Start()
+    void OnDestroy()
     {
-        Sprite.sprite = IconMap.GetSprite(Monster);
+        NumSpawned--;
+    }
+
+    public void Init(Monsters monster)
+    {
+        NumSpawned++;
+        Sprite.sprite = IconMap.GetSprite(monster);
     }
 
     public void StartFollow()

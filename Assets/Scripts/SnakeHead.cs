@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityAtoms.BaseAtoms;
 
 public class SnakeHead : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class SnakeHead : MonoBehaviour
     public LayerMask MovementBlockingLayers;
 
     public new Rigidbody2D rigidbody;
+
+    public Vector2Variable PlayerPosition;
 
     float lerp;
     Vector2Int latestInput, currentMoveDirection;
@@ -49,6 +52,8 @@ public class SnakeHead : MonoBehaviour
             updateMoveDirection();
             updateDestination();
         }
+
+        PlayerPosition.Value = rigidbody.position;
     }
 
     void OnTriggerEnter2D(Collider2D other)
