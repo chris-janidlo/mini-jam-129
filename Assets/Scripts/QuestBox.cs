@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class QuestBox : MonoBehaviour
 {
@@ -14,13 +15,17 @@ public class QuestBox : MonoBehaviour
     private SpriteRenderer bgMiddleDownLeft;
     private SpriteRenderer bgMiddleDownRight;
     private SpriteRenderer bgRightDown;
-    private float timer;
-
     private TextMeshPro description;
 
-    private Quest quest;
-
+    private float timer;
     private bool alive;
+    public IconMap IconMap;
+
+    private float ttlSeconds;
+    private string questtext;
+    private Dictionary<Monsters, int> conditions;
+    public int minTime;
+    public int timePerMonster;
 
     public void Awake()
     {
@@ -35,25 +40,53 @@ public class QuestBox : MonoBehaviour
 
         description = transform.Find("Questtext").GetComponent<TextMeshPro>();
 
-        quest = new Quest();
+        generateQuest();
 
     }
 
+    private void generateQuest()
+    {
+        int totalAmount = 0;
+        while (totalAmount == 0)
+        {
+            questtext = "Defend!<br>";
+            conditions = new Dictionary<Monsters, int>();
+
+            foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
+            {
+                int amount = UnityEngine.Random.Range(0, 3);
+                amount = 1;
+                conditions.Add(monster, amount);
+                //Debug.Log(IconMap.GetSprite(monster));
+                if (amount > 0)
+                {
+                    string monsterstring = IconMap.GetSprite(monster).ToString();
+
+                    questtext += "<nobr><b>" + 1 + "</b> x <sprite=\"tilemap\" name=\"" +
+                        monsterstring.Substring(0, monsterstring.IndexOf(" ")) + "\"></nobr> ";
+                }
+                totalAmount += amount;
+
+            }
+        }
+
+        ttlSeconds = minTime + totalAmount * timePerMonster;
+    }
 
     public void OnEnable()
     {
-        quest = new Quest();
-        initDescription(quest.getText());
+        generateQuest();
+        initDescription();
         alive = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (alive && timer < quest.getTtlSeconds())
+        if (alive && timer < ttlSeconds)
         {
             timer = timer + Time.deltaTime;
-            setText(quest.getText());
+            setText();
         }
         else
         {
@@ -66,31 +99,31 @@ public class QuestBox : MonoBehaviour
     }
 
 
-    private void setText(string questtext)
+    private void setText()
     {
-        float timeLeft = quest.getTtlSeconds() - timer;
+        float timeLeft = ttlSeconds - timer;
 
-        questtext += "<br><br><align=\"center\">";
+        string text = questtext + "<br>";
 
         if (timeLeft < 10)
         {
-            questtext += "<color=\"red\">{0:0}</color> seconds";
+            text += "<color=\"red\">{0:0}</color> seconds";
         }
         else
         {
-            questtext += "{0:0} seconds";
+            text += "{0:0} seconds";
         }
 
-        description.SetText(questtext, timeLeft);
+        description.SetText(text, timeLeft);
     }
 
 
 
 
-    private void initDescription(string questtext)
+    private void initDescription()
     {
 
-        setText(questtext);
+        setText();
         description.ForceMeshUpdate();
 
         Vector2 descriptionSize = description.GetRenderedValues(false);
