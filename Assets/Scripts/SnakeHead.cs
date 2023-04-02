@@ -19,6 +19,9 @@ public class SnakeHead : MonoBehaviour
 
     LinkedList<Vector2> destinationBuffer;
     List<SnakeMonster> followers;
+
+    Queue<SnakeMonster> neck;
+    bool necking;
     
     void Start()
     {
@@ -26,6 +29,7 @@ public class SnakeHead : MonoBehaviour
 
         destinationBuffer = new LinkedList<Vector2>();
         followers = new List<SnakeMonster>(MaxFollowers);
+        neck = new Queue<SnakeMonster>();
 
         var start = Vector2Int.RoundToInt(rigidbody.position);
         rigidbody.MovePosition(start); // ensure we start on the grid
@@ -55,7 +59,7 @@ public class SnakeHead : MonoBehaviour
             && followers.Count < MaxFollowers
         )
         {
-            followers.Insert(0, follower);
+            neck.Enqueue(follower);
             follower.StartFollow();
         }
     }
@@ -75,6 +79,8 @@ public class SnakeHead : MonoBehaviour
         var node = destinationBuffer.First;
         for (var i = -1; i < followers.Count; i++)
         {
+            if (i != -1 && necking) break;
+
             var newPos = Vector2.Lerp(node.Next.Value, node.Value, lerp);
 
             var rbToMove = i == -1
@@ -105,6 +111,9 @@ public class SnakeHead : MonoBehaviour
 
         destinationBuffer.AddFirst(nextDestination);
         lerp = 0;
+
+        necking = neck.Count != 0;
+        if (necking) followers.Insert(0, neck.Dequeue());
 
         // need two extra destinations because each segment (including the head) is
         // lerping between 2 destinations
