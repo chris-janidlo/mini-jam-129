@@ -51,6 +51,8 @@ MonoBehaviour:
   DispersalColor: {r: 0, g: 1, b: 0, a: 1}
   DisperseTime: 0.5
   DisperseEase: 27
+  SpawnAnimTime: 0.7
+  SpawnAnimEase: 24
   IdleLayerName: Snake Monster Idle
   FollowLayerName: Snake Monster Following
   IdleColliderSize: 0.5

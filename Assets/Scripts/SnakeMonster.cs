@@ -13,6 +13,9 @@ public class SnakeMonster : MonoBehaviour
     public float DisperseTime;
     public Ease DisperseEase;
 
+    public float SpawnAnimTime;
+    public Ease SpawnAnimEase;
+
     public string IdleLayerName, FollowLayerName;
     public float IdleColliderSize, FollowColliderSize;
 
@@ -36,6 +39,9 @@ public class SnakeMonster : MonoBehaviour
     {
         NumSpawned++;
         Sprite.sprite = IconMap.GetSprite(monster);
+
+        transform.localScale = Vector3.zero;
+        transform.DOScale(1, SpawnAnimTime).SetEase(SpawnAnimEase);
     }
 
     public void StartFollow()
