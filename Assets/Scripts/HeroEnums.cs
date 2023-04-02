@@ -1,2 +1,2 @@
-enum Heros { Knight, Archer, Rouge, Priest };
+enum Heros { Knight, Archer, Rogue, Priest };
 
