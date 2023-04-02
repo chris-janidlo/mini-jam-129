@@ -69,7 +69,7 @@ public class SnakeHead : MonoBehaviour
             follower.StartFollow();
         }
 
-        if (other.GetComponent<QuestTurnInZone>() is { } zone)
+        if (other.GetComponent<QuestTurnInZone>() is { } zone && zone.QuestActive())
         {
             zone.TurnInQuest(followers.Select(f => f.Type).ToList());
             followers.ForEach(f => f.TurnInForQuest());
