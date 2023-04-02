@@ -62,8 +62,8 @@ public class QuestBox : MonoBehaviour
                 {
                     string monsterstring = IconMap.GetSprite(monster).ToString();
 
-                    questtext += "<nobr><b>" + 1 + "</b> x <sprite=\"tilemap\" name=\"" +
-                        monsterstring.Substring(0, monsterstring.IndexOf(" ")) + "\"></nobr> ";
+                    questtext += "<nobr><b>" + 1 + "</b> <size=10px><sprite=\"tilemap\" name=\"" +
+                        monsterstring.Substring(0, monsterstring.IndexOf(" ")) + "\"></nobr></size> ";
                 }
                 totalAmount += amount;
 
