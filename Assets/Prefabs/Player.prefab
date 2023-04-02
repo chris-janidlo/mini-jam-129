@@ -163,8 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0727fe99acdc4294199e5e578fcf8925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LerpSpeed: 5
-  MaxFollowers: 3
+  LerpSpeed: 10
+  MaxFollowers: 10
   InitialMoveDirection: {x: 1, y: 0}
   MovementBlockingLayers:
     serializedVersion: 2

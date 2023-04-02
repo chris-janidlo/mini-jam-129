@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b46f72aca2ad34439041a98184308d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DispersalDistanceRange: {x: 5, y: 10}
+  DispersalDistanceRange: {x: 10, y: 30}
   DispersalColor: {r: 0, g: 1, b: 0, a: 1}
   DisperseTime: 0.5
   DisperseEase: 27
@@ -63,7 +63,6 @@ MonoBehaviour:
   rigidbody: {fileID: 3867983565945398647}
   collider: {fileID: 3867983565945398646}
   IconMap: {fileID: 11400000, guid: 902e80961f5f0dd4885944814012e490, type: 2}
-  Monster: 1
 --- !u!50 &3867983565945398647
 Rigidbody2D:
   serializedVersion: 4
