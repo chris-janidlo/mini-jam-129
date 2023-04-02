@@ -29,6 +29,7 @@ public class SnakeMonster : MonoBehaviour
     public IconMap IconMap;
 
     public bool Following { get; private set; }
+    public Monsters Type { get; private set; }
 
     void OnDestroy()
     {
@@ -38,6 +39,7 @@ public class SnakeMonster : MonoBehaviour
     public void Init(Monsters monster)
     {
         NumSpawned++;
+        Type = monster;
         Sprite.sprite = IconMap.GetSprite(monster);
 
         transform.localScale = Vector3.zero;
@@ -58,7 +60,8 @@ public class SnakeMonster : MonoBehaviour
 
     public void TurnInForQuest()
     {
-        throw new System.NotImplementedException();
+        Destroy(gameObject);
+        // TODO: animate
     }
 
     IEnumerator disperseRoutine()

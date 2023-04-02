@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,6 +67,13 @@ public class SnakeHead : MonoBehaviour
         {
             neck.Enqueue(follower);
             follower.StartFollow();
+        }
+
+        if (other.GetComponent<QuestTurnInZone>() is { } zone)
+        {
+            zone.TurnInQuest(followers.Select(f => f.Type).ToList());
+            followers.ForEach(f => f.TurnInForQuest());
+            followers.Clear();
         }
     }
 

@@ -157,4 +157,8 @@ public class QuestBox : MonoBehaviour
 
     }
 
+    public void CheckQuest(List<Monsters> monsters)
+    {
+        Debug.Log($"quest turned in: {monsters}");
+    }
 }

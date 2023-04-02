@@ -59,7 +59,7 @@ MonoBehaviour:
   FollowColliderSize: 1
   DispersalAvoidLayers:
     serializedVersion: 2
-    m_Bits: 960
+    m_Bits: 1984
   SpriteTransform: {fileID: 3867983566432997173}
   Sprite: {fileID: 3867983566432997172}
   rigidbody: {fileID: 3867983565945398647}
