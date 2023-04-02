@@ -10,6 +10,8 @@ public class SnakeHead : MonoBehaviour
     public int MaxFollowers;
     public Vector2Int InitialMoveDirection;
 
+    public LayerMask MovementBlockingLayers;
+
     public new Rigidbody2D rigidbody;
 
     float lerp;
@@ -40,8 +42,6 @@ public class SnakeHead : MonoBehaviour
 
         if (lerp >= 1)
         {
-            lerp = 0;
-            currentMoveDirection = latestInput;
             updateDestination();
         }
     }
@@ -55,7 +55,7 @@ public class SnakeHead : MonoBehaviour
         )
         {
             followers.Insert(0, follower);
-            follower.Following = true;
+            follower.StartFollow();
         }
     }
 
@@ -69,7 +69,12 @@ public class SnakeHead : MonoBehaviour
             : new Vector2Int(0, Math.Sign(input.y));
 
         // can't turn 180 degrees
-        if (cardinalizedInput != -currentMoveDirection) latestInput = cardinalizedInput;
+        if (cardinalizedInput == -currentMoveDirection) return;
+
+        var potentialNextDestination = destinationBuffer.First.Value + cardinalizedInput;
+        if (!validDestination(potentialNextDestination)) return;
+        
+        latestInput = cardinalizedInput;
     }
 
     void moveSnake()
@@ -91,8 +96,13 @@ public class SnakeHead : MonoBehaviour
 
     void updateDestination()
     {
+        currentMoveDirection = latestInput;
+
         var nextDestination = destinationBuffer.First.Value + currentMoveDirection;
+        if (!validDestination(nextDestination)) return;
+
         destinationBuffer.AddFirst(nextDestination);
+        lerp = 0;
 
         // need two extra destinations because each segment (including the head) is
         // lerping between 2 destinations
@@ -100,5 +110,20 @@ public class SnakeHead : MonoBehaviour
         {
             destinationBuffer.RemoveLast();
         }
+    }
+
+    bool validDestination(Vector2 query)
+    {
+        if (Physics2D.OverlapPoint(query, MovementBlockingLayers) is { } collider)
+        {
+            var monsterSegment = collider.GetComponent<SnakeMonster>();
+
+            // special case - you can walk through the last monster segment, because it will get out of your way
+            var isLastMonster = monsterSegment != null && monsterSegment.Following && monsterSegment == followers[followers.Count - 1];
+            
+            return isLastMonster;
+        }
+
+        return true;
     }
 }

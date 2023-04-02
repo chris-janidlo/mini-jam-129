@@ -47,8 +47,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b46f72aca2ad34439041a98184308d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Following: 0
+  IdleLayerName: Snake Monster Idle
+  FollowLayerName: Snake Monster Following
+  IdleColliderSize: 0.5
+  FollowColliderSize: 1
   rigidbody: {fileID: 3867983565945398647}
+  collider: {fileID: 3867983565945398646}
 --- !u!50 &3867983565945398647
 Rigidbody2D:
   serializedVersion: 4

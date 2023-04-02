@@ -166,6 +166,9 @@ MonoBehaviour:
   LerpSpeed: 3
   MaxFollowers: 3
   InitialMoveDirection: {x: 1, y: 0}
+  MovementBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 768
   rigidbody: {fileID: 3526664365904289701}
 --- !u!50 &3526664365904289701
 Rigidbody2D:
