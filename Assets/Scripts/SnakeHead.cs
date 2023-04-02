@@ -74,6 +74,16 @@ public class SnakeHead : MonoBehaviour
             : new Vector2Int(0, Math.Sign(input.y));
     }
 
+    void OnDisperse()
+    {
+        foreach (var f in followers) f.Disperse();
+        foreach (var f in neck) f.Disperse();
+
+        followers.Clear();
+        neck.Clear();
+        necking = false;
+    }
+
     void moveSnake()
     {
         var node = destinationBuffer.First;

@@ -47,10 +47,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b46f72aca2ad34439041a98184308d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DispersalDistanceRange: {x: 5, y: 10}
+  DispersalColor: {r: 0, g: 1, b: 0, a: 1}
+  DisperseTime: 0.5
+  DisperseEase: 27
   IdleLayerName: Snake Monster Idle
   FollowLayerName: Snake Monster Following
   IdleColliderSize: 0.5
   FollowColliderSize: 1
+  DispersalAvoidLayers:
+    serializedVersion: 2
+    m_Bits: 960
+  SpriteTransform: {fileID: 3867983566432997173}
+  Sprite: {fileID: 3867983566432997172}
   rigidbody: {fileID: 3867983565945398647}
   collider: {fileID: 3867983565945398646}
 --- !u!50 &3867983565945398647
