@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityAtoms.BaseAtoms;
+using UnityEngine.SceneManagement;
+
 
 public class UIScript : MonoBehaviour
 {
@@ -52,6 +54,11 @@ public class UIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(life.Value < 1)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+
         if (gold.Value != oldGold || life.Value != oldLife)
         {
             updateUI();

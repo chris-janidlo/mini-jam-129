@@ -31,6 +31,8 @@ public class QuestBox : MonoBehaviour
 
     public IntVariable gold;
     public IntVariable life;
+
+    public GameObject zone;
     
 
     public void Awake()
@@ -45,9 +47,6 @@ public class QuestBox : MonoBehaviour
         bgRightDown = transform.Find("Background").transform.Find("BgRightDown").GetComponent<SpriteRenderer>();
 
         description = transform.Find("Questtext").GetComponent<TextMeshPro>();
-
-        generateQuest();
-
     }
 
     private void generateQuest()
@@ -85,6 +84,7 @@ public class QuestBox : MonoBehaviour
     {
         generateQuest();
         initDescription();
+        zone.SetActive(true);
         
     }
 
@@ -212,5 +212,6 @@ public class QuestBox : MonoBehaviour
         alive = false;
         timer = 0;
         gameObject.SetActive(false);
+        zone.SetActive(false);
     }
 }
