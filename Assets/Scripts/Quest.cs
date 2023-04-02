@@ -7,7 +7,7 @@ public class Quest
 {
     private float ttlSeconds;
     private string text;
-    private Dictionary<Heros,int> conditions;
+    private Dictionary<Monsters,int> conditions;
 
     public Quest()
     {
@@ -16,18 +16,18 @@ public class Quest
         int totalAmount = 0;
         while (totalAmount == 0)
         {
-            text = "Yelp! The heros are attacking again!<br>";
+            text = "Yelp! The heroes are attacking again!<br>";
             text += "To counter their raid, we need";
-            conditions = new Dictionary<Heros, int>();
+            conditions = new Dictionary<Monsters, int>();
 
-            foreach (Heros hero in Enum.GetValues(typeof(Heros)))
+            foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
             {
                 int amount = UnityEngine.Random.Range(0, 3);
                 amount = 1;
-                conditions.Add(hero, amount);
+                conditions.Add(monster, amount);
                 if (amount > 0)
                 {
-                    text += "<br>at least <b>" + 1 + "</b> " + hero.ToString();
+                    text += "<br>at least <b>" + 1 + "</b> " + monster.ToString();
                 }
                 totalAmount += amount;
 
