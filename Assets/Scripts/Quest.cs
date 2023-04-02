@@ -23,6 +23,7 @@ public class Quest
             foreach (Heros hero in Enum.GetValues(typeof(Heros)))
             {
                 int amount = UnityEngine.Random.Range(0, 3);
+                amount = 1;
                 conditions.Add(hero, amount);
                 if (amount > 0)
                 {
