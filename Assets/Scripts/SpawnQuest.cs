@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnQuest : MonoBehaviour
 {
 
-    public List<GameObject> quests;
+    private List<GameObject> quests;
 
 
     public float spawnRate;
@@ -39,10 +39,9 @@ public class SpawnQuest : MonoBehaviour
         }
         else
         {
-            if(transform.childCount < 5)
-            {
-                spawnQuest();
-            }
+            
+            spawnQuest();
+            
             //Debug.Log("Fire");
             timer = 0;
         }

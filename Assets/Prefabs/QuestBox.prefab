@@ -139,6 +139,8 @@ MonoBehaviour:
   IconMap: {fileID: 11400000, guid: 902e80961f5f0dd4885944814012e490, type: 2}
   minTime: 0
   timePerMonster: 5
+  gold: {fileID: 11400000, guid: ada4f1e3e2b8d419f9343db79c8d1fe9, type: 2}
+  life: {fileID: 11400000, guid: 3c16647fd677c44e29b9075bf67ac3b3, type: 2}
 --- !u!114 &8311414451117399782
 MonoBehaviour:
   m_ObjectHideFlags: 0

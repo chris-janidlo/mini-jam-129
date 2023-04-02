@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityAtoms.BaseAtoms;
 
 public class QuestBox : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class QuestBox : MonoBehaviour
     private Dictionary<Monsters, int> conditions;
     public int minTime;
     public int timePerMonster;
+    private bool sucess;
+
+    public IntVariable gold;
+    public IntVariable life;
+    
 
     public void Awake()
     {
@@ -55,14 +61,14 @@ public class QuestBox : MonoBehaviour
             foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
             {
                 int amount = UnityEngine.Random.Range(0, 3);
-                amount = 1;
+                //amount = 1;
                 conditions.Add(monster, amount);
                 //Debug.Log(IconMap.GetSprite(monster));
                 if (amount > 0)
                 {
                     string monsterstring = IconMap.GetSprite(monster).ToString();
 
-                    questtext += "<nobr><b>" + 1 + "</b> <size=10px><sprite=\"tilemap\" name=\"" +
+                    questtext += "<nobr><b>" + amount + "</b> <size=10px><sprite=\"tilemap\" name=\"" +
                         monsterstring.Substring(0, monsterstring.IndexOf(" ")) + "\"></nobr></size> ";
                 }
                 totalAmount += amount;
@@ -71,13 +77,15 @@ public class QuestBox : MonoBehaviour
         }
 
         ttlSeconds = minTime + totalAmount * timePerMonster;
+        sucess = true;
+        alive = true;
     }
 
     public void OnEnable()
     {
         generateQuest();
         initDescription();
-        alive = true;
+        
     }
 
     // Update is called once per frame
@@ -90,10 +98,7 @@ public class QuestBox : MonoBehaviour
         }
         else
         {
-            alive = false;
-            timer = 0;
-            gameObject.SetActive(false);
-            Debug.Log("destroy");
+            finish(false);
         }
 
     }
@@ -157,8 +162,55 @@ public class QuestBox : MonoBehaviour
 
     }
 
+    private bool compareRequirement(int provided, int needed)
+    {
+        if (provided >= needed) return true;
+
+        return false;
+    }
+
     public void CheckQuest(List<Monsters> monsters)
     {
-        Debug.Log($"quest turned in: {monsters}");
+        Dictionary<Monsters, int> amount = new Dictionary<Monsters, int>();
+
+        foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
+        {
+            amount.Add(monster, 0);
+            //Debug.Log(amount[monster]);
+        }
+
+        foreach (Monsters monster in monsters)
+        {
+            
+            amount[monster] = amount[monster] + 1;
+            
+        }
+
+        //Debug.Log($"quest turned in: {monsters}");
+
+        foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
+        {
+            //Debug.Log(monster + ": " + amount[monster] + " vs. " + conditions[monster]);
+            sucess = sucess && compareRequirement(amount[monster], conditions[monster]);
+        }
+
+        finish(sucess);
+    }
+
+    private void finish(bool sucess)
+    {
+        if (sucess)
+        {
+            gold.Value = gold.Value + 1;
+            //Debug.Log("Succeed");
+        } else
+        {
+            life.Value = life.Value - 1;
+            //Debug.Log("Failed");
+        }
+
+        alive = false;
+        timer = 0;
+        gameObject.SetActive(false);
     }
 }
