@@ -21,7 +21,16 @@ public class SnakeMonster : MonoBehaviour
     public new Rigidbody2D rigidbody;
     public new BoxCollider2D collider;
 
+    public IconMap IconMap;
+    public Monsters Monster;
+
     public bool Following { get; private set; }
+
+
+    void Start()
+    {
+        Sprite.sprite = IconMap.GetSprite(Monster);
+    }
 
     public void StartFollow()
     {

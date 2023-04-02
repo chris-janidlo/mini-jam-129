@@ -1,2 +1,2 @@
-enum Monsters { Spider, Ghost, Cyclops, Wizard, Bat, Slime };
+public enum Monsters { Spider, Ghost, Cyclops, Wizard, Bat, Slime };
 

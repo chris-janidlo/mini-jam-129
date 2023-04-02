@@ -62,6 +62,8 @@ MonoBehaviour:
   Sprite: {fileID: 3867983566432997172}
   rigidbody: {fileID: 3867983565945398647}
   collider: {fileID: 3867983565945398646}
+  IconMap: {fileID: 11400000, guid: 902e80961f5f0dd4885944814012e490, type: 2}
+  Monster: 1
 --- !u!50 &3867983565945398647
 Rigidbody2D:
   serializedVersion: 4
