@@ -5,9 +5,22 @@ using UnityEngine;
 public class SpawnQuest : MonoBehaviour
 {
 
-    public GameObject quest;
+    public List<GameObject> quests;
+
+
     public float spawnRate;
     private float timer = 0;
+
+    public void Awake()
+    {
+        quests = new List<GameObject>();
+
+        quests.Add(transform.Find("QuestBoxTop").gameObject);
+        quests.Add(transform.Find("QuestBoxLeft").gameObject);
+        quests.Add(transform.Find("QuestBoxBottom").gameObject);
+        quests.Add(transform.Find("QuestBoxRight").gameObject);
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -38,9 +51,22 @@ public class SpawnQuest : MonoBehaviour
     [ContextMenu("Quest")]
     void spawnQuest()
     {
-        
-        GameObject q = Instantiate(quest, new Vector3(0, 0, 0), transform.rotation);
-        q.transform.SetParent(transform);
+
+        List<int> ind = new List<int>();
+
+        for(int i = 0; i < 4; i++)
+        {
+            if (!quests[i].activeSelf)
+            {
+                ind.Add(i);
+            }
+        }
+
+        if(ind.Count > 0)
+        {
+            GameObject q = quests[ind[Random.Range(0, ind.Count)]];
+            q.SetActive(true);
+        }
         
 
 

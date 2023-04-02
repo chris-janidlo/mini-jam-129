@@ -11,13 +11,14 @@ public class Quest
 
     public Quest()
     {
-        conditions = new Dictionary<Heros, int>();
+        
 
         int totalAmount = 0;
         while (totalAmount == 0)
         {
             text = "Yelp! The heros are attacking again!<br>";
             text += "To counter their raid, we need";
+            conditions = new Dictionary<Heros, int>();
 
             foreach (Heros hero in Enum.GetValues(typeof(Heros)))
             {
@@ -25,14 +26,14 @@ public class Quest
                 conditions.Add(hero, amount);
                 if (amount > 0)
                 {
-                    text += "<br>at least " + 1 + " " + hero.ToString();
+                    text += "<br>at least <b>" + 1 + "</b> " + hero.ToString();
                 }
                 totalAmount += amount;
 
             }
         }
 
-        ttlSeconds = 25 * totalAmount * 5;
+        ttlSeconds = 0 + totalAmount * 5;
         
 
     }
