@@ -42,6 +42,7 @@ public class SnakeHead : MonoBehaviour
 
         if (lerp >= 1)
         {
+            updateMoveDirection();
             updateDestination();
         }
     }
@@ -64,17 +65,9 @@ public class SnakeHead : MonoBehaviour
         var input = value.Get<Vector2>();
         if (input == Vector2.zero) return;
 
-        var cardinalizedInput = Mathf.Abs(input.x) > Mathf.Abs(input.y)
+        latestInput = Mathf.Abs(input.x) > Mathf.Abs(input.y)
             ? new Vector2Int(Math.Sign(input.x), 0)
             : new Vector2Int(0, Math.Sign(input.y));
-
-        // can't turn 180 degrees
-        if (cardinalizedInput == -currentMoveDirection) return;
-
-        var potentialNextDestination = destinationBuffer.First.Value + cardinalizedInput;
-        if (!validDestination(potentialNextDestination)) return;
-        
-        latestInput = cardinalizedInput;
     }
 
     void moveSnake()
@@ -94,10 +87,19 @@ public class SnakeHead : MonoBehaviour
         }
     }
 
+    void updateMoveDirection()
+    {
+        // can't turn 180 degrees
+        if (latestInput == -currentMoveDirection) return;
+
+        var potentialNextDestination = destinationBuffer.First.Value + latestInput;
+        if (!validDestination(potentialNextDestination)) return;
+        
+        currentMoveDirection = latestInput;
+    }
+
     void updateDestination()
     {
-        currentMoveDirection = latestInput;
-
         var nextDestination = destinationBuffer.First.Value + currentMoveDirection;
         if (!validDestination(nextDestination)) return;
 
