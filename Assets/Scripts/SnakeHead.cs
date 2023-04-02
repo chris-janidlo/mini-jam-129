@@ -96,7 +96,7 @@ public class SnakeHead : MonoBehaviour
     void updateMoveDirection()
     {
         // can't turn 180 degrees
-        if (latestInput == -currentMoveDirection) return;
+        if ((necking || followers.Count > 0) && latestInput == -currentMoveDirection) return;
 
         var potentialNextDestination = destinationBuffer.First.Value + latestInput;
         if (!validDestination(potentialNextDestination)) return;
