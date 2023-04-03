@@ -43,6 +43,10 @@ public class QuestBox : MonoBehaviour
     public SoundEffectPlayer SoundEffectPlayer;
 
     private bool playedLowTimeAlert;
+    private bool playedFailedSound;
+
+    private bool wait;
+    public float waitTime;
     
 
     public void Awake()
@@ -99,21 +103,38 @@ public class QuestBox : MonoBehaviour
         zone.SetActive(true);
         SoundEffectPlayer.Play(SpawnedSounds.GetNext());
         playedLowTimeAlert = false;
+        playedFailedSound = false;
+        wait = false;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (alive && timer < ttlSeconds)
+        if (!wait)
         {
-            timer = timer + Time.deltaTime;
-            setText();
-        }
-        else
+            if (alive && timer < ttlSeconds)
+            {
+                timer = timer + Time.deltaTime;
+                setText();
+            }
+            else
+            {
+                finish(false, null);
+            }
+        } else
         {
-            finish(false);
+            if (timer < waitTime)
+            {
+                timer = timer + Time.deltaTime;
+            }
+            else
+            {
+                wait = false;
+                finish(false, null);
+            }
         }
+        
 
     }
 
@@ -192,10 +213,13 @@ public class QuestBox : MonoBehaviour
     public void CheckQuest(List<Monsters> monsters)
     {
         Dictionary<Monsters, int> amount = new Dictionary<Monsters, int>();
+        Dictionary<Monsters, int> diff = new Dictionary<Monsters, int>();
+
 
         foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
         {
             amount.Add(monster, 0);
+            diff.Add(monster, 0);
             //Debug.Log(amount[monster]);
         }
 
@@ -211,13 +235,18 @@ public class QuestBox : MonoBehaviour
         foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
         {
             //Debug.Log(monster + ": " + amount[monster] + " vs. " + conditions[monster]);
-            sucess = sucess && compareRequirement(amount[monster], conditions[monster]);
+            bool check = compareRequirement(amount[monster], conditions[monster]);
+            sucess = sucess && check;
+            if (!check)
+            {
+                diff[monster] = conditions[monster] - amount[monster];
+            }
         }
 
-        finish(sucess);
+        finish(sucess, diff);
     }
 
-    private void finish(bool sucess)
+    private void finish(bool sucess, Dictionary<Monsters, int> diff)
     {
         if (sucess)
         {
@@ -227,13 +256,52 @@ public class QuestBox : MonoBehaviour
         } else
         {
             life.Value = life.Value - 1;
-            SoundEffectPlayer.Play(FailedSounds.GetNext());
+            if (!playedFailedSound)
+            {
+                SoundEffectPlayer.Play(FailedSounds.GetNext());
+                playedFailedSound = true;
+            }
+       
             //Debug.Log("Failed");
+
+            if(diff != null)
+            {
+                setFailText(diff);
+                wait = true;
+            }
         }
 
         alive = false;
         timer = 0;
-        gameObject.SetActive(false);
+        if (!wait)
+        {
+            gameObject.SetActive(false);
+        }
         zone.SetActive(false);
+    }
+
+    private void setFailText(Dictionary<Monsters, int> diff)
+    {
+        
+
+        string text = "<color=\"red\">Failed <br>";
+
+        foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
+        {
+            int amount = diff[monster];
+            if (amount > 0)
+            {
+                string monsterstring = IconMap.GetSprite(monster).ToString();
+
+                text += "<nobr><b>" + amount + "</b> <size=10px><sprite=\"tilemap\" name=\"" +
+                    monsterstring.Substring(0, monsterstring.IndexOf(" ")) + "\"></nobr></size> ";
+            }
+
+        }
+
+        text += "</color>";
+
+
+        description.SetText(text);
     }
 }
