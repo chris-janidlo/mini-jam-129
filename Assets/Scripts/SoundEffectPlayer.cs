@@ -10,7 +10,7 @@ public class SoundEffectPlayer : ScriptableObject
 
     List<SfxAudioSource> spawnedAudioSources = new List<SfxAudioSource>();
 
-    public void Play (AudioClip clip)
+    public void Play (AudioClip clip, SfxOptions options = null)
     {
         if (spawnedAudioSources.Any(s => s == null))
         {
@@ -26,6 +26,14 @@ public class SoundEffectPlayer : ScriptableObject
             spawnedAudioSources.Add(source);
         }
 
-        source.Play(clip);
+        source.Play(clip, options ?? new SfxOptions());
     }
+}
+
+[System.Serializable]
+public class SfxOptions
+{
+    public float Volume = 1.0f;
+    public bool RandomizePitch = false;
+    public Vector2 RandomPitchRange;
 }

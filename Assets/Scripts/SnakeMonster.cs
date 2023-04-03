@@ -21,12 +21,18 @@ public class SnakeMonster : MonoBehaviour
     public string IdleLayerName, FollowLayerName;
     public float IdleColliderSize, FollowColliderSize;
 
+    public AudioClip Grunt;
+    public Vector2 DispersalGruntDelayRange;
+    public SfxOptions GruntOptions;
+
     public LayerMask DispersalAvoidLayers;
     public Transform SpriteTransform;
     public SpriteRenderer Sprite;
 
     public new Rigidbody2D rigidbody;
     public new BoxCollider2D collider;
+
+    public SoundEffectPlayer SoundEffectPlayer;
 
     public IconMap IconMap;
 
@@ -53,11 +59,13 @@ public class SnakeMonster : MonoBehaviour
         Following = true;
         gameObject.layer = LayerMask.NameToLayer(FollowLayerName);
         collider.size = Vector2.one * FollowColliderSize;
+        SoundEffectPlayer.Play(Grunt, GruntOptions);
     }
 
     public void Disperse()
     {
         StartCoroutine(disperseRoutine());
+        StartCoroutine(disperseGruntRoutine());
     }
 
     public void TurnInForQuest()
@@ -109,5 +117,11 @@ public class SnakeMonster : MonoBehaviour
 
         Following = false;
         Sprite.color = oldColor;
+    }
+
+    IEnumerator disperseGruntRoutine()
+    {
+        yield return new WaitForSeconds(RandomExtra.Range(DispersalGruntDelayRange));
+        SoundEffectPlayer.Play(Grunt, GruntOptions);
     }
 }

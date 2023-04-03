@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using crass;
 
 public class SfxAudioSource : MonoBehaviour
 {
@@ -13,8 +14,17 @@ public class SfxAudioSource : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void Play (AudioClip clip)
+    public void Play (AudioClip clip, SfxOptions options)
     {
-        audioSource.PlayOneShot(clip);
+        if (options.RandomizePitch)
+        {
+            audioSource.pitch = RandomExtra.Range(options.RandomPitchRange);
+        }
+        else
+        {
+            audioSource.pitch = 1;
+        }
+
+        audioSource.PlayOneShot(clip, options.Volume);
     }
 }
