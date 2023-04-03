@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityAtoms.BaseAtoms;
+using crass;
 
 public class QuestBox : MonoBehaviour
 {
@@ -33,6 +34,13 @@ public class QuestBox : MonoBehaviour
     public IntVariable life;
 
     public GameObject zone;
+
+    public BagRandomizer<AudioClip> SpawnedSounds, LowTimeSounds, FailedSounds;
+    public AudioClip SucceessSound;
+
+    public SoundEffectPlayer SoundEffectPlayer;
+
+    private bool playedLowTimeAlert;
     
 
     public void Awake()
@@ -47,6 +55,7 @@ public class QuestBox : MonoBehaviour
         bgRightDown = transform.Find("Background").transform.Find("BgRightDown").GetComponent<SpriteRenderer>();
 
         description = transform.Find("Questtext").GetComponent<TextMeshPro>();
+
     }
 
     private void generateQuest()
@@ -85,6 +94,8 @@ public class QuestBox : MonoBehaviour
         generateQuest();
         initDescription();
         zone.SetActive(true);
+        SoundEffectPlayer.Play(SpawnedSounds.GetNext());
+        playedLowTimeAlert = false;
         
     }
 
@@ -113,6 +124,11 @@ public class QuestBox : MonoBehaviour
         if (timeLeft < 10)
         {
             text += "<color=\"red\">{0:0}</color> seconds";
+            if (!playedLowTimeAlert)
+            {
+                SoundEffectPlayer.Play(LowTimeSounds.GetNext());
+                playedLowTimeAlert = true;
+            }
         }
         else
         {
@@ -202,10 +218,12 @@ public class QuestBox : MonoBehaviour
         if (sucess)
         {
             gold.Value = gold.Value + 1;
+            SoundEffectPlayer.Play(SucceessSound);
             //Debug.Log("Succeed");
         } else
         {
             life.Value = life.Value - 1;
+            SoundEffectPlayer.Play(FailedSounds.GetNext());
             //Debug.Log("Failed");
         }
 
