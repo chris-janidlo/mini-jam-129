@@ -255,9 +255,10 @@ public class QuestBox : MonoBehaviour
             //Debug.Log("Succeed");
         } else
         {
-            life.Value = life.Value - 1;
+            
             if (!playedFailedSound)
             {
+                life.Value = life.Value - 1;
                 SoundEffectPlayer.Play(FailedSounds.GetNext());
                 playedFailedSound = true;
             }
