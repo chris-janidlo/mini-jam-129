@@ -101,16 +101,16 @@ public class UIScript : MonoBehaviour
 
         
 
-        if (gold.Value >= 3)
+        if (gold.Value >= 12)
         {
-            difficulty.Value = 2;
+            difficulty.Value = 4;
         } else if (gold.Value >= 6)
         {
             difficulty.Value = 3;
         }
-        else if (gold.Value >= 12)
+        else if (gold.Value >= 2)
         {
-            difficulty.Value = 4;
+            difficulty.Value = 2;
         }
 
     }
