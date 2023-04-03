@@ -11,13 +11,15 @@ public class MonsterSpawner : MonoBehaviour
     public int MinDistanceFromPlayer;
 
     public LayerMask AvoidLayers;
-    public float Delay;
+    public AnimationCurve DelayByDifficulty;
     public int MaxMonstersSpawned;
 
     public BagRandomizer<Monsters> MonsterBag;
 
     public SnakeMonster MonsterPrefab;
     public Vector2Variable PlayerPosition;
+
+    public IntVariable Difficulty;
 
     float spawnTimer;
 
@@ -35,7 +37,7 @@ public class MonsterSpawner : MonoBehaviour
 
         if (spawnTimer <= 0 && SnakeMonster.NumSpawned <= MaxMonstersSpawned)
         {
-            spawnTimer = Delay;
+            spawnTimer = DelayByDifficulty.Evaluate(Difficulty.Value);
             StartCoroutine(spawnRoutine());
         }
     }
