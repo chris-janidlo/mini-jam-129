@@ -5,6 +5,7 @@ using TMPro;
 using System;
 using UnityAtoms.BaseAtoms;
 using crass;
+using DG.Tweening;
 
 public class QuestBox : MonoBehaviour
 {
@@ -130,6 +131,7 @@ public class QuestBox : MonoBehaviour
             {
                 SoundEffectPlayer.Play(LowTimeSounds.GetNext());
                 playedLowTimeAlert = true;
+                transform.DOShakePosition(1);
             }
         }
         else

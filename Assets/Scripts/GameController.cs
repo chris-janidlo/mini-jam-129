@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public void playAgain()
+    public void playGame()
     {
         SceneManager.LoadScene("Main");
     }
