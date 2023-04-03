@@ -20,14 +20,15 @@ public class UIScript : MonoBehaviour
     private SpriteRenderer bgRightDown;
     private TextMeshPro description;
 
-    private int maxLife;
+    private int maxLife; 
 
     public IntVariable gold;
     public IntVariable life;
+    public IntVariable difficulty;
 
     private int oldLife;
     private int oldGold;
-
+    private int oldDifficulty;
 
     public void Awake()
     {
@@ -44,6 +45,7 @@ public class UIScript : MonoBehaviour
 
         oldGold = gold.Value;
         oldLife = life.Value;
+        oldDifficulty = difficulty.Value;
         maxLife = life.Value;
 
         initUI();
@@ -56,10 +58,14 @@ public class UIScript : MonoBehaviour
     {
         if(life.Value < 1)
         {
+            gold.Reset();
+            life.Reset();
+            difficulty.Reset();
+
             SceneManager.LoadScene("GameOver");
         }
 
-        if (gold.Value != oldGold || life.Value != oldLife)
+        if (gold.Value != oldGold || life.Value != oldLife ||  difficulty.Value == oldDifficulty)
         {
             updateUI();
         }
@@ -69,8 +75,9 @@ public class UIScript : MonoBehaviour
 
     private void updateUI()
     {
-
-        
+        oldGold = gold.Value;
+        oldLife = life.Value;
+        oldDifficulty = difficulty.Value;
 
         string text = "Lives <br><size=10px>";
 
@@ -92,8 +99,20 @@ public class UIScript : MonoBehaviour
         // uesttext += "<nobr><b>" + 1 + "</b>  "; 
         description.SetText(text);
 
-        oldGold = gold.Value;
-        oldLife = life.Value;
+        
+
+        if (gold.Value >= 3)
+        {
+            difficulty.Value = 2;
+        } else if (gold.Value >= 6)
+        {
+            difficulty.Value = 3;
+        }
+        else if (gold.Value >= 12)
+        {
+            difficulty.Value = 4;
+        }
+
     }
 
 

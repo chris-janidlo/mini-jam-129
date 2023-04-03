@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311924, g: 0.38073963, b: 0.3587269, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -615,6 +615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gold: {fileID: 11400000, guid: ada4f1e3e2b8d419f9343db79c8d1fe9, type: 2}
   life: {fileID: 11400000, guid: 3c16647fd677c44e29b9075bf67ac3b3, type: 2}
+  difficulty: {fileID: 11400000, guid: 1a332c4552bb1477bac1f82eefa90f1d, type: 2}
 --- !u!1 &579390564
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +641,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 579390564}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.5, y: -2.5, z: 0}
+  m_LocalPosition: {x: 20, y: -2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -671,7 +672,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 5}
+  m_Size: {x: 3, y: 5}
   m_EdgeRadius: 0
 --- !u!1 &696701918
 GameObject:
@@ -947,7 +948,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110284505}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.5, y: -10.5, z: 0}
+  m_LocalPosition: {x: 6.5, y: -10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -978,7 +979,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5, y: 2}
+  m_Size: {x: 5, y: 3}
   m_EdgeRadius: 0
 --- !u!1001 &1512728471
 PrefabInstance:
@@ -1125,7 +1126,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1737208616}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.5, y: -0.5, z: 0}
+  m_LocalPosition: {x: -20, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1156,7 +1157,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 5}
+  m_Size: {x: 3, y: 5}
   m_EdgeRadius: 0
 --- !u!1 &1938343673
 GameObject:
@@ -1426,6 +1427,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2740616106675841638, guid: a0d083b84742f44d19720bb97ec759d1,
+        type: 3}
+      propertyPath: difficulty
+      value: 
+      objectReference: {fileID: 11400000, guid: 1a332c4552bb1477bac1f82eefa90f1d,
+        type: 2}
     - target: {fileID: 2740616106675841640, guid: a0d083b84742f44d19720bb97ec759d1,
         type: 3}
       propertyPath: m_Name

@@ -32,6 +32,7 @@ public class QuestBox : MonoBehaviour
 
     public IntVariable gold;
     public IntVariable life;
+    public IntVariable difficulty;
 
     public GameObject zone;
 
@@ -68,7 +69,8 @@ public class QuestBox : MonoBehaviour
 
             foreach (Monsters monster in Enum.GetValues(typeof(Monsters)))
             {
-                int amount = UnityEngine.Random.Range(0, 3);
+                //Debug.Log(difficulty.Value);
+                int amount = UnityEngine.Random.Range(0, difficulty.Value+1);
                 //amount = 1;
                 conditions.Add(monster, amount);
                 //Debug.Log(IconMap.GetSprite(monster));
@@ -84,7 +86,7 @@ public class QuestBox : MonoBehaviour
             }
         }
 
-        ttlSeconds = minTime + totalAmount * timePerMonster;
+        ttlSeconds = minTime * (5 - difficulty.Value) + totalAmount * timePerMonster;
         sucess = true;
         alive = true;
     }

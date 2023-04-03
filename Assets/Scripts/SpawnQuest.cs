@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityAtoms.BaseAtoms;
 
 public class SpawnQuest : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class SpawnQuest : MonoBehaviour
 
 
     public float spawnRate;
+    public IntVariable difficulty;
+
     private float timer = 0;
 
     public void Awake()
@@ -61,7 +64,7 @@ public class SpawnQuest : MonoBehaviour
             }
         }
 
-        if(ind.Count > 0)
+        if(ind.Count > 4 - difficulty.Value)
         {
             GameObject q = quests[ind[Random.Range(0, ind.Count)]];
             q.SetActive(true);

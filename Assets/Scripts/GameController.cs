@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameControll : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     public void playAgain()
     {
