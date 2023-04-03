@@ -1,12 +1,20 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using crass;
 using DG.Tweening;
+using UnityAtoms.BaseAtoms;
 
 public class SnakeMonster : MonoBehaviour
 {
     public static int NumSpawned { get; private set; }
+
+    public Vector2 WanderTimeRange;
+    public float MinDistanceFromPlayerToWander, MinDistanceFromOtherWanderersToWander;
+    public LayerMask WanderAvoidLayers, OtherWanderersLayers;
+    public float WanderMoveTime;
+    public Ease WanderEase;
 
     public Vector2 DispersalDistanceRange;
     public Color DispersalColor;
@@ -34,14 +42,40 @@ public class SnakeMonster : MonoBehaviour
 
     public SoundEffectPlayer SoundEffectPlayer;
 
+    public Vector2Variable PlayerPosition;
+
     public IconMap IconMap;
 
     public bool Following { get; private set; }
     public Monsters Type { get; private set; }
 
+    float wanderTimer;
+    private bool wandering;
+
     void OnDestroy()
     {
         NumSpawned--;
+    }
+
+    void Start()
+    {
+        wanderTimer = RandomExtra.Range(WanderTimeRange);
+    }
+
+    void Update()
+    {
+        wanderTimer -= Time.deltaTime;
+
+        if (
+            !Following
+            && !wandering
+            && wanderTimer <= 0
+            && Vector2.Distance(rigidbody.position, PlayerPosition.Value) > MinDistanceFromPlayerToWander
+            && !Physics2D.OverlapCircleAll(rigidbody.position, MinDistanceFromOtherWanderersToWander, OtherWanderersLayers).Any(c => c.GetComponent<SnakeMonster>().wandering)
+        )
+        {
+            StartCoroutine(wanderRoutine());
+        }
     }
 
     public void Init(Monsters monster)
@@ -111,7 +145,7 @@ public class SnakeMonster : MonoBehaviour
         
         SpriteTransform.position = startPos;
         yield return SpriteTransform
-            .DOMove((Vector2)target, DisperseTime)
+            .DOMove(rigidbody.position, DisperseTime)
             .SetEase(DisperseEase)
             .WaitForCompletion();
 
@@ -123,5 +157,35 @@ public class SnakeMonster : MonoBehaviour
     {
         yield return new WaitForSeconds(RandomExtra.Range(DispersalGruntDelayRange));
         SoundEffectPlayer.Play(Grunt, GruntOptions);
+    }
+
+    IEnumerator wanderRoutine()
+    {
+        wandering = true;
+
+        var deltas = new List<Vector2Int>() { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
+        deltas.ShuffleInPlace();
+
+        Vector2? target = null;
+        foreach (var delta in deltas)
+        {
+            var potentialTarget = rigidbody.position + (Vector2)delta;
+            if (Physics2D.OverlapPoint(potentialTarget, WanderAvoidLayers) == null)
+            {
+                target = potentialTarget;
+                break;
+            }
+        }
+
+        if (target.HasValue)
+        {
+            yield return rigidbody
+                .DOMove(target.Value, WanderMoveTime)
+                .SetEase(WanderEase)
+                .WaitForCompletion();
+        }
+
+        wandering = false;
+        wanderTimer = RandomExtra.Range(WanderTimeRange);
     }
 }
